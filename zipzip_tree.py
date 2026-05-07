@@ -169,11 +169,15 @@ class ZipZipTree:
 		
 		cur = self.root
 
-		while cur:
+		while cur.key != key:
 			if cur.key < key:
 				cur = cur.right
-			elif cur.key >= key:
+			elif cur.key > key:
 				cur = cur.left
+
+		return cur.val
+
+		
 
 		
 
@@ -201,6 +205,19 @@ class ZipZipTree:
 	#              you can assume that the item exists in the tree.
 
 	def get_depth(self, key: KeyType):
+		depth = 0
+
+		cur = self.root
+
+		while cur.key != key:
+			if cur.key < key:
+				cur = cur.right
+			elif cur.key > key:
+				cur = cur.left
+			depth += 1
+
+		return depth
+		
 		
 
 	# feel free to define new methods in addition to the above
