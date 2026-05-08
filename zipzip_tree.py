@@ -136,6 +136,7 @@ class ZipZipTree:
 	def search(self, key: KeyType):
 		cur = self.root
 		while cur.key != key: 
+			prev = cur
 			if cur.key > key:
 				cur = cur.left
 			elif cur.key < key:
@@ -143,22 +144,66 @@ class ZipZipTree:
 			else:
 				break
 
-		return cur
+		return [cur, prev]
 
 	# remove(): removes item with parameter key from tree.
 	#           you can assume that the item exists in the tree.
 
 	def remove(self, key: KeyType):
-		node = self.search(key)
+		'''nodes = self.search(key)
+		node = nodes[0]
+		prev = nodes[1]
+		
+		if node: 
+			self.size -= 1
+
 		if node.left:
 			left = node.left
+
 		if node.right:
 			right = node.right
+		'''
 
-		
+		cur = self.root
+		while cur.key != key:
+			prev = cur
+			cur = cur.left if key < cur.key else cur.right
 
+		left = cur.left
+		right = cur.right
 
-	
+		if not left:
+			cur = right
+		elif not right: 
+			cur = left
+		elif left.rank >= right.rank:
+			cur = left
+		else:
+			cur = right
+
+		if key == self.root.key:
+			self.root = cur
+		elif key < prev.key:
+			prev.left = cur
+		else:
+			prev.right = cur
+
+		while left and right:
+			if left.rank >= right.rank:
+				while left or left.rank < right.rank:
+					prev = left
+					left = left.right
+				prev.right = right
+			else:
+				while right or left.rank >= right.rank:
+					prev = right
+					right = right.left
+				prev.left = left 
+
+		self.size -= 1
+
+		return
+
 
 	# find(): returns the value of item with parameter key.
 	#         you can assume that the item exists in the tree.
@@ -190,17 +235,30 @@ class ZipZipTree:
 			return -1
 		
 		cur = self.root
-		height = 0
 
-		while cur:
-			height += 1
-
+		def calc_height(self, node):
+			return 1 + max(self.calc_height(node.left), self.calc_height(node.right))
+		
+		return calc_height(cur)
 
 
 	# get_depth(): returns the depth of the item with parameter key.
 	#              you can assume that the item exists in the tree.
 
 	def get_depth(self, key: KeyType):
+		depth = 0
+
+		cur = self.root
+
+		while cur.key != key:
+			depth += 1
+			if cur.key > key:
+				cur = cur.left
+			else:
+				cur = cur.right
+
+		return depth
+
 		
 
 	# feel free to define new methods in addition to the above
