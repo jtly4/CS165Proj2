@@ -214,11 +214,15 @@ class ZipZipTree:
 		
 		cur = self.root
 
-		while cur.key != key:
+		while cur:
 			if cur.key < key:
 				cur = cur.right
 			elif cur.key > key:
 				cur = cur.left
+			else:
+				break
+
+		return cur.val
 
 		
 
@@ -467,11 +471,20 @@ class ZipZipTree:
 		if node.right:
 			right = node.right
 		'''
-
+		#print(f"Looking for node to delete: {key}")
 		cur = self.root
+
 		while cur.key != key:
 			prev = cur
-			cur = cur.left if key < cur.key else cur.right
+			#cur = cur.left if key < cur.key else cur.right
+			if cur.key < key:
+				#print("traversing right")
+				cur = cur.right
+				is_right = True
+			else:
+				#print("traversing left")
+				cur = cur.left
+				is_right = False
 
 		left = cur.left
 		right = cur.right
@@ -480,6 +493,13 @@ class ZipZipTree:
 			cur = right
 		elif not right: 
 			cur = left
+		elif not left and not right:
+			#print("Deleting leaf node")
+			if is_right:
+				prev.right = None
+			else:
+				prev.left = None
+			return
 		elif left.rank >= right.rank:
 			cur = left
 		else:
@@ -526,7 +546,10 @@ class ZipZipTree:
 			else:
 				break
 
-		return cur.val
+		if cur:
+			return cur.val
+		else:
+			return -1
 
 		
 
@@ -554,23 +577,46 @@ class ZipZipTree:
 	#              you can assume that the item exists in the tree.
 
 	def get_depth(self, key: KeyType):
-		depth = 0
-
 		if not self.root:
 			return -1
-
-		cur = self.root
 		
-		while cur and cur.key != key:
-			depth += 1
+		depth = 0
+		cur = self.root
+		while cur:
+			#print(f"current node: {cur.key}")
+
 			if cur.key > key:
 				cur = cur.left
 			elif cur.key < key:
 				cur = cur.right
 			else:
 				break
+			depth += 1
+
+		if not cur:
+			return -1
+		else:
+			return depth
+	'''
+	def get_depth(self, key: KeyType):
+		if not self.root:
+			return -1
+		
+		depth = 0
+		cur = self.root
+		
+		while cur:
+			
+			if cur.key > key:
+				cur = cur.left
+			elif cur.key < key:
+				cur = cur.right
+			else:
+				break
+			depth += 1
 
 		return depth
+	'''
 
 '''
 [InsertType(4, 'a', requirements.Rank(0, 9)), InsertType(5, 'b', requirements.Rank(0, 9)), InsertType(2, 'c', requirements.Rank(1, 12)), InsertType(1, 'd', requirements.Rank(1, 5))]
