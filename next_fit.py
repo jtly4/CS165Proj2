@@ -15,7 +15,7 @@
 
 
 def next_fit(items: list[float], assignment: list[int], free_space: list[float]):
-	SCALE = 10**6
+	SCALE = 100
 	bin_count = 0
 	cur_capacity = 0
 	remaining_capacity = SCALE
@@ -23,7 +23,7 @@ def next_fit(items: list[float], assignment: list[int], free_space: list[float])
 	bins = {bin_count: []}
 	for i, item in enumerate(items):
 		rounded = int(round(item*SCALE))
-		if cur_capacity >= SCALE or (cur_capacity + rounded >= SCALE):
+		if cur_capacity >= SCALE or (cur_capacity + rounded > SCALE):
 			free_space.append(remaining_capacity / SCALE)
 			bin_count += 1
 			bins[bin_count] = []
@@ -43,11 +43,13 @@ def next_fit(items: list[float], assignment: list[int], free_space: list[float])
 	return free_space
 
 items = [0.7, 0.5, 0.2, 0.1, 0.2, 0.9, 0.3]
+items = [0.79, 0.88, 0.95, 0.12, 0.05, 0.46, 0.53, 0.64, 0.04, 0.38, 0.03, 0.26]
+
 # assignment = [0, 1, 2, 3, 4, 5, 6]
 assignment = [0] * len(items)
 free_space = []
 
-print(next_fit(items, assignment, free_space))
+#print(next_fit(items, assignment, free_space))
 
 	
 
