@@ -62,6 +62,17 @@ def zip_tree_tests():
 	print(f'get_height(): {tree.get_height()}, Expected: 2')
 	print(f'get_depth(2): {tree.get_depth(2)}, Expected: 0')
 	print(f'get_depth(1): {tree.get_depth(1)}, Expected: 2\n')
+	print(f'get_depth(4): {tree.get_depth(4)}, Expected: 2\n')
+	print(f'get_depth(5): {tree.get_depth(5)}, Expected: 2\n')
+
+	print("removing 4")
+	tree.remove(4)
+	print(f'get_size(): {tree.get_size()}, Expected: 4')
+	print(f'get_height(): {tree.get_height()}, Expected: 2')
+	print(f'get_depth(2): {tree.get_depth(2)}, Expected: 0')
+	print(f'get_depth(1): {tree.get_depth(1)}, Expected: 2\n')
+	print(f'get_depth(4): {tree.get_depth(4)}, Expected: -1\n')
+	print(f'get_depth(5): {tree.get_depth(5)}, Expected: 1\n')
 
 	data2 = [InsertType(4, 'a', requirements.Rank(2, 1)), InsertType(5, 'b', requirements.Rank(2, 2)), InsertType(2, 'c', requirements.Rank(1, 8)), InsertType(1, 'd', requirements.Rank(0, 12)), InsertType(0, 'e', requirements.Rank(1, 8))]
 	tree2 = create_tree_with_data(data2)
@@ -200,4 +211,4 @@ def bin_packing_tests():
 
 if __name__ == '__main__':
 	zip_tree_tests()
-	bin_packing_tests()
+	#bin_packing_tests()

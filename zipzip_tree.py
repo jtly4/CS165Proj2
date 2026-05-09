@@ -560,14 +560,19 @@ class ZipZipTree:
 	def get_depth(self, key: KeyType):
 		depth = 0
 
-		cur = self.root
+		if not self.root:
+			return -1
 
-		while cur.key != key:
+		cur = self.root
+		
+		while cur and cur.key != key:
 			depth += 1
 			if cur.key > key:
 				cur = cur.left
-			else:
+			elif cur.key < key:
 				cur = cur.right
+			else:
+				break
 
 		return depth
 
@@ -586,12 +591,11 @@ data2 = [InsertType(4, 'a', requirements.Rank(2, 1)), InsertType(5, 'b', require
 			5, b, 2, 2
 			/
 		4, a, 2, 1
-		/			\
-	2, c, 1, 8	 	5, b, 2, 2
+		/		
+	2, c, 1, 8	 	
 	/
 0, e, 1, 8
- /
-1, d, 0, 12
-
+		\
+		1, d, 0, 12
 
 '''
