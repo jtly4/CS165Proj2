@@ -50,6 +50,7 @@ def next_fit(items: list[float], assignment: list[int], free_space: list[float])
 	remaining_capacity = 1.0
 
 	if not items:
+		free_space.append(remaining_capacity)
 		return free_space
 
 	bins = {bin_count: []}
