@@ -76,8 +76,8 @@ class ZipZipTree:
 
 		cur = self.root
 
-		while cur and (rank < cur.rank or (rank == cur.rank and key > cur.key)):
-			'''if rank > cur.rank:
+		while cur:
+			if rank > cur.rank:
 				break
 			elif rank <= cur.rank:
 				prev = cur
@@ -85,6 +85,8 @@ class ZipZipTree:
 			'''
 			prev = cur
 			cur = cur.left if key < cur.key else cur.right
+			'''
+			
 			
 
 		if cur == self.root:
@@ -255,7 +257,7 @@ class ZipZipTree:
 
 		cur = self.root
 		
-		while cur:
+		while cur and cur.key != key:
 			depth += 1
 			if cur.key > key:
 				cur = cur.left
