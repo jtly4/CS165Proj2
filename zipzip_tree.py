@@ -498,12 +498,12 @@ class ZipZipTree:
 
 		while left and right:
 			if left.rank >= right.rank:
-				while left or left.rank < right.rank:
+				while left and left.rank >= right.rank:
 					prev = left
 					left = left.right
 				prev.right = right
 			else:
-				while right or left.rank >= right.rank:
+				while right and left.rank < right.rank:
 					prev = right
 					right = right.left
 				prev.left = left 
