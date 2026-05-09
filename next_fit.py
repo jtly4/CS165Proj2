@@ -13,36 +13,39 @@
 # 	            you should add one element for each bin that the algorithm creates.
 # 	            when the function returns, this should indicate the final free space available in each bin.
 
-'''
+from decimal import Decimal, getcontext, ROUND_HALF_UP
+
+
 def next_fit(items: list[float], assignment: list[int], free_space: list[float]):
-	SCALE = 1e-10
+	#SCALE = 1e-10
 	bin_count = 0
-	cur_capacity = 0
-	remaining_capacity = SCALE
+	cur_capacity = Decimal("0.00")
+	capacity_per_bin = Decimal("1.00")
+	remaining_capacity = capacity_per_bin
+	
 
 	bins = {bin_count: []}
 	for i, item in enumerate(items):
-		rounded = item*SCALE
-		if cur_capacity >= SCALE or (cur_capacity + rounded > SCALE):
-			free_space.append(remaining_capacity / SCALE)
+		if cur_capacity >= capacity_per_bin or (cur_capacity + Decimal(item) > capacity_per_bin):
+			free_space.append(float(remaining_capacity))
 			bin_count += 1
 			bins[bin_count] = []
-			cur_capacity = 0
-			remaining_capacity = SCALE
+			cur_capacity = Decimal("0.00")
+			remaining_capacity = capacity_per_bin
 
 
 		bins[bin_count].append(item)
-		cur_capacity += rounded
-		remaining_capacity -= rounded
+		cur_capacity += Decimal(item)
+		remaining_capacity -= Decimal(item)
 		assignment[i] = bin_count
 		print(cur_capacity, remaining_capacity)
 
 	# need to handle last element if it didn't fill up current bin 
 	if len(free_space) != bin_count:
-		free_space.append(remaining_capacity / SCALE)
+		free_space.append(float(remaining_capacity))
 
 	return free_space
-'''
+
 '''
 def next_fit(items: list[float], assignment: list[int], free_space: list[float]):
 	bin_count = 0
@@ -80,7 +83,7 @@ def next_fit(items: list[float], assignment: list[int], free_space: list[float])
 
 
 # Original: 6/30
-'''
+
 def next_fit(items: list[float], assignment: list[int], free_space: list[float]):
 	bin_count = 0
 	cur_capacity = 0
@@ -89,7 +92,6 @@ def next_fit(items: list[float], assignment: list[int], free_space: list[float])
 	bins = {bin_count: []}
 	for i in range(len(items)):
 		if cur_capacity >= 1 or (cur_capacity + items[i] >= 1):
-			# free_space[bin_count] = remaining_capacity
 			free_space.append(remaining_capacity)
 			bin_count += 1
 			bins[bin_count] = []
@@ -100,15 +102,14 @@ def next_fit(items: list[float], assignment: list[int], free_space: list[float])
 		bins[bin_count].append(items[i])
 		cur_capacity += items[i]
 		remaining_capacity -= items[i]
-		assignment.append(bin_count)
-		#assignment[i] = bin_count
+		assignment[i] = bin_count
 
 	# need to handle last element if it didn't fill up current bin 
 	if len(free_space) != bin_count:
 		free_space.append(remaining_capacity)
 
 	return free_space
-
+'''
 items = [0.7, 0.5, 0.2, 0.1, 0.2, 0.9, 0.3]
 items = [0.79, 0.88, 0.95, 0.12, 0.05, 0.46, 0.53, 0.64, 0.04, 0.38, 0.03, 0.26]
 
@@ -116,4 +117,4 @@ items = [0.79, 0.88, 0.95, 0.12, 0.05, 0.46, 0.53, 0.64, 0.04, 0.38, 0.03, 0.26]
 assignment = [0] * len(items)
 free_space = []
 
-# print(next_fit(items, assignment, free_space))
+print(next_fit(items, assignment, free_space))

@@ -534,7 +534,7 @@ class ZipZipTree:
 
 	def find(self, key: KeyType) -> ValType:
 		if not self.root:
-			return None
+			return -1
 		
 		cur = self.root
 
