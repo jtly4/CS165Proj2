@@ -83,7 +83,7 @@ def next_fit(items: list[float], assignment: list[int], free_space: list[float])
 
 
 # Original: 6/30
-
+'''
 def next_fit(items: list[float], assignment: list[int], free_space: list[float]):
 	bin_count = 0
 	cur_capacity = 0
@@ -110,7 +110,7 @@ def next_fit(items: list[float], assignment: list[int], free_space: list[float])
 		free_space.append(remaining_capacity)
 
 	return free_space
-'''
+
 items = [0.7, 0.5, 0.2, 0.1, 0.2, 0.9, 0.3]
 items = [0.79, 0.88, 0.95, 0.12, 0.05, 0.46, 0.53, 0.64, 0.04, 0.38, 0.03, 0.26]
 
