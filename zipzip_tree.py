@@ -70,16 +70,22 @@ class ZipZipTree:
 
 		if not self.root:
 			self.root = node
+			node.left = None
+			node.right = None
 			return
 
 		cur = self.root
 
 		while cur and (rank < cur.rank or (rank == cur.rank and key > cur.key)):
-			if rank > cur.rank:
+			'''if rank > cur.rank:
 				break
 			elif rank <= cur.rank:
 				prev = cur
 				cur = cur.left if key < cur.key else cur.right
+			'''
+			prev = cur
+			cur = cur.left if key < cur.key else cur.right
+			
 
 		if cur == self.root:
 			if cur.key < key:
@@ -87,20 +93,12 @@ class ZipZipTree:
 			elif cur.key >= key:
 				node.right = cur
 			self.root = node
+			return
 		elif key < prev.key:
 			prev.left = node
 		else:
 			prev.right = node
-
-		if not cur:
-			node.left = None
-			node.right = None
-		else:
-			if key < cur.key:
-				node.right = cur 
-			else:
-				node.left = cur 
-
+		
 		prev = node 
 		
 		while cur:
@@ -252,14 +250,19 @@ class ZipZipTree:
 	def get_depth(self, key: KeyType):
 		depth = 0
 
-		cur = self.root
+		if not self.root:
+			return 0
 
-		while cur.key != key:
+		cur = self.root
+		
+		while cur:
 			depth += 1
 			if cur.key > key:
 				cur = cur.left
-			else:
+			elif cur.key < key:
 				cur = cur.right
+			else:
+				break
 
 		return depth
 
