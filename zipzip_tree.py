@@ -47,7 +47,7 @@ class ZipZipTree:
 		rand = random.random()
 
 		while rand < 0.5:
-			geom_rank += 1
+			geo_rank += 1
 			rand = random.random()
 
 		uni_rank = random.randint(0, int(math.log2(self.capacity) ** 3) - 1)
@@ -74,7 +74,7 @@ class ZipZipTree:
 
 		cur = self.root
 
-		while cur:
+		while cur and (rank < cur.rank or (rank == cur.rank and key > cur.key)):
 			if rank > cur.rank:
 				break
 			elif rank <= cur.rank:
@@ -106,12 +106,12 @@ class ZipZipTree:
 		while cur:
 			fix = prev
 			if cur.key < key:
-				while cur or cur.key < key:
+				while cur and cur.key < key:
 					prev = cur
 					cur = cur.right
 					is_right = True
 			else:
-				while cur or cur.key > key:
+				while cur and cur.key > key:
 					prev = cur
 					cur = cur.left
 					is_right = False
@@ -217,8 +217,12 @@ class ZipZipTree:
 		while cur:
 			if cur.key < key:
 				cur = cur.right
-			elif cur.key >= key:
+			elif cur.key > key:
 				cur = cur.left
+			else:
+				break
+
+		return cur.val
 
 		
 
@@ -234,12 +238,12 @@ class ZipZipTree:
 		if not self.root:
 			return -1
 		
-		cur = self.root
-
-		def calc_height(self, node):
-			return 1 + max(self.calc_height(node.left), self.calc_height(node.right))
+		def calc_height(node: TreeNode):
+			if not node:
+				return -1
+			return 1 + max(calc_height(node.left), calc_height(node.right))
 		
-		return calc_height(cur)
+		return calc_height(self.root)
 
 
 	# get_depth(): returns the depth of the item with parameter key.
