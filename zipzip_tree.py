@@ -335,8 +335,10 @@ class ZipZipTree:
 
 
 	def insert(self, key: KeyType, val: ValType, rank: Rank = None):
-		if self.size == self.capacity:
-			return "Cannot insert. Max will be exceeded"
+		#if self.size == self.capacity:
+		#	return "Cannot insert. Max will be exceeded"
+		
+		#print(f"Inserting: {key}, {val}, {rank.uniform_rank}, {rank.geometric_rank} !!")
 		
 		self.size += 1
 
@@ -346,56 +348,84 @@ class ZipZipTree:
 		node = TreeNode(key, val, rank)
 
 		if not self.root:
+			#print("Starting fresh tree! This is the root.")
 			self.root = node
 			return
 
 		cur = self.root
 
-		while cur:
+		while cur and (rank < cur.rank or (rank == cur.rank and key > cur.key)):
+			#print(f"Current node: {cur.key}, {cur.val}, {cur.rank}")
 			if rank > cur.rank:
+				#print(f"New node rank {rank} > {cur.rank}")
+				#print("We stop here")
 				break
 			elif rank <= cur.rank:
 				prev = cur
-				cur = cur.left if key < cur.key else cur.right
+				#cur = cur.left if key < cur.key else cur.right
+				if key < cur.key:
+					cur = cur.left
+					#print("Traversing left")
+				else:
+					cur = cur.right
+					#print("Traversing right")
 
 		if cur == self.root:
+			#print("We are at root. Moving old root to the new  root's...")
 			if cur.key < key:
 				node.left = cur
+				#print("left")
 			elif cur.key >= key:
 				node.right = cur
+				#print("right")
 			self.root = node
+			return
 		elif key < prev.key:
+			#print(f"key: {key} < prev key: {prev.key}")
+			#print(f"new node will be left of ({prev.key}, {prev.val})")
 			prev.left = node
 		else:
+			#print(f"key: {key} >= prev key: {prev.key}")
+			#print(f"new node will be right of ({prev.key}, {prev.val})")
 			prev.right = node
 
 		if not cur:
+			#print(f"New node will be a child of {prev.key}, {prev.val}")
 			node.left = None
 			node.right = None
+			#print("Insertion complete")
+			return
 		else:
+			#print("The current node will be the new node's...")
 			if key < cur.key:
 				node.right = cur 
+				#print("right")
 			else:
 				node.left = cur 
+				#print("left")
 
 		prev = node 
-		
+		#print("Finding replacement")
 		while cur:
 			fix = prev
 			if cur.key < key:
+				#print("going right")
 				while cur and cur.key < key:
 					prev = cur
 					cur = cur.right
 					is_right = True
 			else:
+				#print("going left")
 				while cur and cur.key > key:
 					prev = cur
 					cur = cur.left
 					is_right = False
-			'''
-			this doesn't make sense to me because we set fix <- prev <- node...
+			
+			# this doesn't make sense to me because we set fix <- prev <- node...
 			if fix.key > key or (fix == node and prev.key > key):
 				fix.left = cur
+			else:
+				fix.right = cur
 			'''
 			if prev.key > key:
 				fix.left = cur
@@ -406,6 +436,7 @@ class ZipZipTree:
 				prev.right = None
 			else:
 				prev.left = None
+			'''
 
 		return
 	
@@ -540,8 +571,27 @@ class ZipZipTree:
 
 		return depth
 
-		
+'''
+[InsertType(4, 'a', requirements.Rank(0, 9)), InsertType(5, 'b', requirements.Rank(0, 9)), InsertType(2, 'c', requirements.Rank(1, 12)), InsertType(1, 'd', requirements.Rank(1, 5))]
 
-	# feel free to define new methods in addition to the above
-	# fill in the definitions of each required member function (above),
-	# and for any additional member functions you define
+		2, c, 1, 12
+		/		\
+1, d, 1, 5  	4, a, 0, 9
+    /      			\
+0, e, 1, 5		  	5, b, 0, 9
+
+
+data2 = [InsertType(4, 'a', requirements.Rank(2, 1)), InsertType(5, 'b', requirements.Rank(2, 2)), InsertType(2, 'c', requirements.Rank(1, 8)), InsertType(1, 'd', requirements.Rank(0, 12)), InsertType(0, 'e', requirements.Rank(1, 8))]
+
+			5, b, 2, 2
+			/
+		4, a, 2, 1
+		/			\
+	2, c, 1, 8	 	5, b, 2, 2
+	/
+0, e, 1, 8
+ /
+1, d, 0, 12
+
+
+'''
