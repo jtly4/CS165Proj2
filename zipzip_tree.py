@@ -214,15 +214,11 @@ class ZipZipTree:
 		
 		cur = self.root
 
-		while cur:
+		while cur.key != key:
 			if cur.key < key:
 				cur = cur.right
 			elif cur.key > key:
 				cur = cur.left
-			else:
-				break
-
-		return cur.val
 
 		
 
