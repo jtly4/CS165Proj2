@@ -102,8 +102,8 @@ def next_fit(items: list[float], assignment: list[int], free_space: list[float])
 		bins[bin_count].append(items[i])
 		cur_capacity += items[i]
 		remaining_capacity -= items[i]
-		#assignment.append(bin_count)
-		assignment[i] = bin_count
+		assignment.append(bin_count)
+		#assignment[i] = bin_count
 
 	# need to handle last element if it didn't fill up current bin 
 	if len(free_space) != bin_count:
