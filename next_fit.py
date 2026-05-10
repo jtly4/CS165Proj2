@@ -77,7 +77,6 @@ def next_fit(items: list[float], assignment: list[int], free_space: list[float])
 	# need to handle last element if it didn't fill up current bin 
 	if len(free_space) != bin_count:
 		free_space.append(remaining_capacity)
-	print(free_space)
 	return free_space
 
 
