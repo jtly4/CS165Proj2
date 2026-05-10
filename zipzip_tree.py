@@ -52,6 +52,24 @@ class ZipZipTree:
 		uni_rank = random.randint(0, int(math.log2(self.capacity) ** 3) - 1)
 		return Rank(geometric_rank=geo_rank, uniform_rank=uni_rank)
 
+	# split(): returns left keys < key, and right keys > keys
+	def split(self, node, key):
+		if node is None:
+			return None, None
+		
+		if node.key < key:
+			L_right, R = self.split(node.right, key)
+			node.right = L_right
+			return node, R
+		
+		else:
+			L, R_left = self.split(node.left, key)
+			node.left = R_left
+			return L, node
+		
+	
+
+
 	# insert(): inserts item with parameter key, value, and rank into tree.
 	#           if rank is not provided, a random rank should be selected by using get_random_rank().
 
@@ -74,10 +92,12 @@ class ZipZipTree:
 			return
 
 		cur = self.root
+		prev = None
+		is_left = False
 
-		while cur and (rank < cur.rank or (rank == cur.rank and key < cur.key)):
+		while cur:
 			#print(f"Current node: {cur.key}, {cur.val}, {cur.rank}")
-			if rank > cur.rank:
+			'''if rank > cur.rank:
 				#print(f"New node rank {rank} > {cur.rank}")
 				#print("We stop here")
 				break
@@ -90,7 +110,14 @@ class ZipZipTree:
 				else:
 					cur = cur.right
 					#print("Traversing right")
-
+			'''
+			if cur.rank > rank or (cur.rank == rank and cur.key < key):
+				prev = cur
+				is_left = (key < cur.key)
+				cur = cur.left if is_left else cur.right
+			else:
+				break
+		'''
 		if cur == self.root:
 			#print("We are at root. Moving old root to the new  root's...")
 			if cur.key < key:
@@ -149,6 +176,16 @@ class ZipZipTree:
 				fix.right = cur
 
 		return
+		'''
+
+		node.left, node.right = self.split(cur, key)
+
+		if prev is None:
+			self.root = node
+		elif is_left:
+			prev.left = node
+		else:
+			prev.right = node
 	
 	# search(): returns the node to be removed, its left and right child, and its parent
 	def search(self, key: KeyType):
