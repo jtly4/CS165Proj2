@@ -24,7 +24,20 @@ def first_fit(items: list[float], assignment: list[int], free_space: list[float]
 	# note: if None, it should make a new bin? 
 
 	def find_first_fit_node(node, size):
-		pass
+		# entire subtree cannot fit item!
+		if node is None or get_brc(node) < size - SCALE:
+			return None 
+		
+		# check left subtree first
+		res = find_first_fit_node(node.left, size)
+		if res is not None:
+			return res
+		
+		if node.val['rc'] >= size - SCALE:
+			return node
+		
+		else:
+			return find_first_fit_node(node.right, size)
 
 
 
