@@ -454,7 +454,8 @@ class ZipZipTree:
 
 		if not cur:
 			return []
-		
+		if cur == self.root:
+			prev = None
 		return [prev, cur, cur.left, cur.right]
 	
 	def remove_leaf(self, prev, cur):
@@ -561,7 +562,7 @@ class ZipZipTree:
 		if cur:
 			return cur.val
 		else:
-			return -1
+			return None
 
 		
 
@@ -595,7 +596,7 @@ class ZipZipTree:
 		depth = 0
 		cur = self.root
 		while cur:
-			print(f"current node: {cur.key}")
+			#print(f"current node: {cur.key}")
 			if cur.key > key:
 				cur = cur.left
 			elif cur.key < key:
