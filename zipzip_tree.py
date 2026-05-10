@@ -334,9 +334,7 @@ class ZipZipTree:
 	# get_height(): returns the height of the tree.
 
 	def get_height(self) -> int:
-		if not self.root:
-			return 0
-		
+
 		def calc_height(node: TreeNode):
 			if not node:
 				return -1
