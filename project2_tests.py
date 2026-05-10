@@ -49,7 +49,7 @@ def test_algorithm(test: ProblemInstance, expected_result: ProblemInstance, algo
 def zip_tree_tests():
 	print('testing ZipTree')
 
-	data = [InsertType(6, 'a', requirements.Rank(0, 9)), InsertType(7, 'b', requirements.Rank(0, 9)), InsertType(3, 'c', requirements.Rank(1, 12)), InsertType(1, 'd', requirements.Rank(1, 5)), InsertType(4, 'd', requirements.Rank(1, 5))]
+	data = [InsertType(6, 'a', requirements.Rank(1, 9)), InsertType(7, 'b', requirements.Rank(0, 9)), InsertType(3, 'c', requirements.Rank(1, 12)), InsertType(1, 'd', requirements.Rank(1, 5)), InsertType(4, 'd', requirements.Rank(1, 5))]
 	tree = create_tree_with_data(data)
 
 	print(f'find(4): {tree.find(4)}, Expected: d')
