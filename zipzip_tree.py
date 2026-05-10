@@ -440,7 +440,7 @@ class ZipZipTree:
 
 		return
 	
-	# search(): returns the node being searched 
+	# search(): returns the node to be removed, its left and right child, and its parent
 	def search(self, key: KeyType):
 		cur = self.root
 		while cur.key != key: 
@@ -452,29 +452,35 @@ class ZipZipTree:
 			else:
 				break
 
-		return [cur, prev]
+		return [prev, cur, cur.left, cur.right]
+	
+	def remove_leaf(prev, cur):
+		if prev.right == cur:
+			prev.right = None
+		else:
+			prev.left = None
 
 	# remove(): removes item with parameter key from tree.
 	#           you can assume that the item exists in the tree.
 
 	def remove(self, key: KeyType):
-		'''nodes = self.search(key)
-		node = nodes[0]
-		prev = nodes[1]
+		if not self.root:
+			return 
 		
-		if node: 
+		print(f"Looking for node to delete: {key}")
+
+		nodes = self.search(key)
+		prev = nodes[0]
+		cur = nodes[1]
+		left = nodes[2]
+		right = nodes[3]
+		
+		if cur: 
 			self.size -= 1
+		else:
+			return
 
-		if node.left:
-			left = node.left
-
-		if node.right:
-			right = node.right
-		'''
-		#print(f"Looking for node to delete: {key}")
-		cur = self.root
-
-		while cur.key != key:
+		'''while cur.key != key:
 			prev = cur
 			#cur = cur.left if key < cur.key else cur.right
 			if cur.key < key:
@@ -485,21 +491,17 @@ class ZipZipTree:
 				#print("traversing left")
 				cur = cur.left
 				is_right = False
-
-		left = cur.left
-		right = cur.right
-
-		if not left:
+		'''
+		# if cur is a leaf node
+		if not left and not right:
+			self.remove_leaf(prev, cur)
+			return
+		# if cur has either left or right children
+		elif not left:
 			cur = right
 		elif not right: 
 			cur = left
-		elif not left and not right:
-			#print("Deleting leaf node")
-			if is_right:
-				prev.right = None
-			else:
-				prev.left = None
-			return
+		# if cur has two children
 		elif left.rank >= right.rank:
 			cur = left
 		else:
@@ -523,8 +525,6 @@ class ZipZipTree:
 					prev = right
 					right = right.left
 				prev.left = left 
-
-		self.size -= 1
 
 		return
 

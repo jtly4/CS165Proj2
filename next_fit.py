@@ -26,6 +26,9 @@ def next_fit(items: list[float], assignment: list[int], free_space: list[float])
 
 	bins = {bin_count: []}
 	for i, item in enumerate(items):
+		if item > capacity_per_bin:
+			free_space.append(0)
+			
 		if cur_capacity >= capacity_per_bin or (cur_capacity + Decimal(item) > capacity_per_bin):
 			free_space.append(float(remaining_capacity))
 			bin_count += 1
