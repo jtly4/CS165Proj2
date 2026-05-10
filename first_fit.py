@@ -19,8 +19,13 @@ def first_fit(items: list[float], assignment: list[int], free_space: list[float]
 			get_brc(node.right)
 		)
 
+	# find_first_fit_node(): returns node with tightest fit of current item, rc >= size
+	# 						 or None if it cannot fit
+	# note: if None, it should make a new bin? 
+
 	def find_first_fit_node(node, size):
-		
+		pass
+
 
 
 
