@@ -467,7 +467,7 @@ class ZipZipTree:
 		if not self.root:
 			return 
 		
-		print(f"Looking for node to delete: {key}")
+		# print(f"Looking for node to delete: {key}")
 
 		nodes = self.search(key)
 		prev = nodes[0]
