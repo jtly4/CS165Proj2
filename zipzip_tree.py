@@ -75,7 +75,7 @@ class ZipZipTree:
 
 		cur = self.root
 
-		while cur and (rank < cur.rank or (rank == cur.rank and key > cur.key)):
+		while cur and (rank < cur.rank or (rank == cur.rank and key < cur.key)):
 			#print(f"Current node: {cur.key}, {cur.val}, {cur.rank}")
 			if rank > cur.rank:
 				#print(f"New node rank {rank} > {cur.rank}")
