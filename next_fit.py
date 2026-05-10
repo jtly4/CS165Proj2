@@ -15,7 +15,7 @@
 
 from decimal import Decimal, getcontext, ROUND_HALF_UP
 
-
+'''
 def next_fit(items: list[float], assignment: list[int], free_space: list[float]):
 	#SCALE = 1e-10
 	bin_count = 0
@@ -48,7 +48,7 @@ def next_fit(items: list[float], assignment: list[int], free_space: list[float])
 		free_space.append(float(remaining_capacity))
 
 	return free_space
-
+'''
 '''
 def next_fit(items: list[float], assignment: list[int], free_space: list[float]):
 	bin_count = 0
