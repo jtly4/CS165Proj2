@@ -253,7 +253,7 @@ class ZipZipTree:
 
 	def find(self, key: KeyType) -> ValType:
 		if not self.root:
-			return -1
+			return None
 		
 		cur = self.root
 
@@ -293,7 +293,7 @@ class ZipZipTree:
 
 	def get_depth(self, key: KeyType):
 		if not self.root:
-			return -1
+			return None
 		
 		depth = 0
 		cur = self.root
@@ -308,29 +308,9 @@ class ZipZipTree:
 			depth += 1
 
 		if not cur:
-			return -1
+			return None
 		else:
 			return depth
-	'''
-	def get_depth(self, key: KeyType):
-		if not self.root:
-			return -1
-		
-		depth = 0
-		cur = self.root
-		
-		while cur:
-			
-			if cur.key > key:
-				cur = cur.left
-			elif cur.key < key:
-				cur = cur.right
-			else:
-				break
-			depth += 1
-
-		return depth
-	'''
 
 '''
 [InsertType(4, 'a', requirements.Rank(0, 9)), InsertType(5, 'b', requirements.Rank(0, 9)), InsertType(2, 'c', requirements.Rank(1, 12)), InsertType(1, 'd', requirements.Rank(1, 5))]
