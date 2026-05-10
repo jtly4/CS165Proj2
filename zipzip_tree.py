@@ -443,7 +443,7 @@ class ZipZipTree:
 	# search(): returns the node to be removed, its left and right child, and its parent
 	def search(self, key: KeyType):
 		cur = self.root
-		while cur.key != key: 
+		while cur and cur.key != key: 
 			prev = cur
 			if cur.key > key:
 				cur = cur.left
@@ -452,13 +452,18 @@ class ZipZipTree:
 			else:
 				break
 
+		if not cur:
+			return []
+		
 		return [prev, cur, cur.left, cur.right]
 	
-	def remove_leaf(prev, cur):
+	def remove_leaf(self, prev, cur):
 		if prev.right == cur:
 			prev.right = None
 		else:
 			prev.left = None
+
+		return
 
 	# remove(): removes item with parameter key from tree.
 	#           you can assume that the item exists in the tree.
@@ -470,15 +475,22 @@ class ZipZipTree:
 		# print(f"Looking for node to delete: {key}")
 
 		nodes = self.search(key)
+		if not nodes: 
+			return
+		else:
+			self.size -= 1
+			
 		prev = nodes[0]
 		cur = nodes[1]
 		left = nodes[2]
 		right = nodes[3]
 		
-		if cur: 
-			self.size -= 1
-		else:
-			return
+		
+		
+		print(f"prev: {prev.key if prev else None}")
+		print(f"cur: {cur.key}")
+		print(f"left: {left.key if left else None}")
+		print(f"right: {right.key if right else None}")
 
 		'''while cur.key != key:
 			prev = cur
@@ -583,8 +595,7 @@ class ZipZipTree:
 		depth = 0
 		cur = self.root
 		while cur:
-			#print(f"current node: {cur.key}")
-
+			print(f"current node: {cur.key}")
 			if cur.key > key:
 				cur = cur.left
 			elif cur.key < key:
