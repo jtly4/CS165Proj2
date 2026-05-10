@@ -147,36 +147,23 @@ class ZipZipTree:
 				fix.left = cur
 			else:
 				fix.right = cur
-			'''
-			if prev.key > key:
-				fix.left = cur
-			else:
-				fix.right = cur
-
-			if is_right:
-				prev.right = None
-			else:
-				prev.left = None
-			'''
 
 		return
 	
 	# search(): returns the node to be removed, its left and right child, and its parent
 	def search(self, key: KeyType):
 		cur = self.root
+		prev = None
 		while cur and cur.key != key: 
 			prev = cur
 			if cur.key > key:
 				cur = cur.left
-			elif cur.key < key:
-				cur = cur.right
 			else:
-				break
+				cur = cur.right
 
 		if not cur:
 			return []
-		if cur == self.root:
-			prev = None
+
 		return [prev, cur, cur.left, cur.right]
 	
 	def remove_leaf(self, prev, cur):
@@ -186,6 +173,26 @@ class ZipZipTree:
 			prev.left = None
 
 		return
+	
+	# zip(): returns root of the merged tree
+	
+	def zip(self, left: TreeNode, right: TreeNode) -> TreeNode:
+		if not left:
+			return right
+		if not right:
+			return left
+		
+		# left's right subtree merges with right
+		
+		if left.rank >= right.rank:
+			left.right = self.zip(left.right, right)
+			return left
+		
+		# right's left subtree must merge with left
+		else:
+			right.left = self.zip(left, right.left)
+			return right
+
 
 	# remove(): removes item with parameter key from tree.
 	#           you can assume that the item exists in the tree.
@@ -194,13 +201,12 @@ class ZipZipTree:
 		if not self.root:
 			return 
 		
-		# print(f"Looking for node to delete: {key}")
-
+		# if key is not in tree, return 
 		nodes = self.search(key)
 		if not nodes: 
 			return
-		else:
-			self.size -= 1
+		
+		self.size -= 1
 
 		prev = nodes[0]
 		cur = nodes[1]
@@ -212,6 +218,7 @@ class ZipZipTree:
 		#print(f"left: {left.key if left else None}")
 		#print(f"right: {right.key if right else None}")
 
+		'''
 		# if cur is a leaf node
 		if not left and not right:
 			self.remove_leaf(prev, cur)
@@ -247,6 +254,18 @@ class ZipZipTree:
 				prev.left = left 
 
 		return
+		'''
+
+		merged = self.zip(left, right)
+
+		if prev is None:
+			self.root = merged
+		elif prev.left == cur:
+			prev.left = merged
+		else:
+			prev.right = merged 
+		
+	
 
 	# find(): returns the value of item with parameter key.
 	#         you can assume that the item exists in the tree.

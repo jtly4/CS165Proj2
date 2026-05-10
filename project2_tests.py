@@ -70,7 +70,7 @@ def zip_tree_tests():
 	tree.insert(2, 'j', requirements.Rank(1, 5))
 	print(f'get_size(): {tree.get_size()}, Expected: 7')
 	print(f'get_height(): {tree.get_height()}, Expected: 4')
-	print(f'get_depth(2): {tree.get_depth(2)}, Expected: 3?')
+	print(f'get_depth(2): {tree.get_depth(2)}, Expected: 3')
 	print(f'get_depth(1): {tree.get_depth(1)}, Expected: 2')
 	print(f'get_depth(4): {tree.get_depth(4)}, Expected: 1')
 	print(f'get_depth(6): {tree.get_depth(6)}, Expected: 2\n')
@@ -90,8 +90,8 @@ def zip_tree_tests():
 	print(f'get_height(): {tree.get_height()}, Expected: 4')
 	print(f'get_depth(3): {tree.get_depth(3)}, Expected: 0')
 	print(f'get_depth(1): {tree.get_depth(1)}, Expected: 2')
-	print(f'get_depth(4): {tree.get_depth(4)}, Expected: -1')
-	print(f'get_depth(6): {tree.get_depth(6)}, Expected: 1\n')
+	print(f'get_depth(5): {tree.get_depth(5)}, Expected: -1')
+	print(f'get_depth(7): {tree.get_depth(7)}, Expected: 2\n')
 
 	print("removing 0")
 	tree.remove(0)
@@ -104,11 +104,11 @@ def zip_tree_tests():
 	print("removing 3")
 	tree.remove(3)
 	print(f'get_size(): {tree.get_size()}, Expected: 4')
-	print(f'get_height(): {tree.get_height()}, Expected: 4')
-	print(f'get_depth(2): {tree.get_depth(2)}, Expected: 1')
-	print(f'get_depth(1): {tree.get_depth(1)}, Expected: 0')
-	print(f'get_depth(6): {tree.get_depth(6)}, Expected: 2')
-	print(f'get_depth(7): {tree.get_depth(7)}, Expected: 3\n')
+	print(f'get_height(): {tree.get_height()}, Expected: 3')
+	print(f'get_depth(2): {tree.get_depth(2)}, Expected: 2')
+	print(f'get_depth(1): {tree.get_depth(1)}, Expected: 1')
+	print(f'get_depth(6): {tree.get_depth(6)}, Expected: 0')
+	print(f'get_depth(7): {tree.get_depth(7)}, Expected: 1\n')
 
 
 	data2 = [InsertType(4, 'a', requirements.Rank(2, 1)), InsertType(5, 'b', requirements.Rank(2, 2)), InsertType(2, 'c', requirements.Rank(1, 8)), InsertType(1, 'd', requirements.Rank(0, 12)), InsertType(0, 'e', requirements.Rank(1, 8))]
