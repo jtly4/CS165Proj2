@@ -66,9 +66,6 @@ class ZipZipTree:
 			L, R_left = self.split(node.left, key)
 			node.left = R_left
 			return L, node
-		
-	
-
 
 	# insert(): inserts item with parameter key, value, and rank into tree.
 	#           if rank is not provided, a random rank should be selected by using get_random_rank().
@@ -82,7 +79,7 @@ class ZipZipTree:
 		self.size += 1
 
 		if not rank:
-			rank = get_random_rank()
+			rank = self.get_random_rank()
 
 		node = TreeNode(key, val, rank)
 

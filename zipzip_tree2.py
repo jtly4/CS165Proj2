@@ -599,9 +599,85 @@ data2 = [InsertType(4, 'a', requirements.Rank(2, 1)), InsertType(5, 'b', require
 		1, d, 0, 12
 
 '''
+# zipziptree before recursion
 
-'''
-def insert(self, key: KeyType, val: ValType, rank: Rank = None):
+
+# explanations for member functions are provided in requirements.py
+# each file that uses a Zip Tree should import it from this file
+
+from __future__ import annotations
+
+import math
+from typing import TypeVar
+from dataclasses import dataclass
+import random
+
+# any variable annotated with KeyType should use the same type for each tree, and should be comparable.
+
+# ValType is for any additional data to be stored in the nodes.
+
+# Rank is a container representing each node's rank, both geometric and uniform.
+#           If using an earlier form of Python, you can use a named tuple instead.
+KeyType = TypeVar('KeyType')
+ValType = TypeVar('ValType')
+
+@dataclass(frozen=True, order=True)
+class Rank:
+	geometric_rank: int
+	uniform_rank: int
+
+class TreeNode:
+    def __init__(self, key: KeyType, val: ValType, rank: Rank = None, left=None, right=None):
+        self.key = key
+        self.val = val
+        self.rank = rank
+        self.left = left
+        self.right = right
+
+class ZipZipTree:
+	# ZipZipTree(): constructs the zip-zip tree with a specific capacity.
+	def __init__(self, capacity: int):
+		self.capacity = capacity
+		self.size = 0
+		self.root = None
+		
+	# get_random_rank(): returns a random node rank, chosen independently from:
+	#           a geometric distribution of mean 1 and,
+	#           a uniform distribution of integers from 0 to log(capacity)^3 - 1 (log capacity cubed minus 1).
+
+	def get_random_rank(self) -> Rank:
+		geo_rank = 0
+		rand = random.random()
+
+		while rand < 0.5:
+			geo_rank += 1
+			rand = random.random()
+
+		uni_rank = random.randint(0, int(math.log2(self.capacity) ** 3) - 1)
+		return Rank(geometric_rank=geo_rank, uniform_rank=uni_rank)
+
+	# split(): returns left keys < key, and right keys > keys
+	def split(self, node, key):
+		if node is None:
+			return None, None
+		
+		if node.key < key:
+			L_right, R = self.split(node.right, key)
+			node.right = L_right
+			return node, R
+		
+		else:
+			L, R_left = self.split(node.left, key)
+			node.left = R_left
+			return L, node
+		
+	
+
+
+	# insert(): inserts item with parameter key, value, and rank into tree.
+	#           if rank is not provided, a random rank should be selected by using get_random_rank().
+
+	def insert(self, key: KeyType, val: ValType, rank: Rank = None):
 		#if self.size == self.capacity:
 		#	return "Cannot insert. Max will be exceeded"
 		
@@ -610,7 +686,7 @@ def insert(self, key: KeyType, val: ValType, rank: Rank = None):
 		self.size += 1
 
 		if not rank:
-			rank = get_random_rank()
+			rank = self.get_random_rank()
 
 		node = TreeNode(key, val, rank)
 
@@ -620,10 +696,12 @@ def insert(self, key: KeyType, val: ValType, rank: Rank = None):
 			return
 
 		cur = self.root
+		prev = None
+		is_left = False
 
-		while cur and (rank < cur.rank or (rank == cur.rank and key > cur.key)):
+		while cur:
 			#print(f"Current node: {cur.key}, {cur.val}, {cur.rank}")
-			if rank > cur.rank:
+			'''if rank > cur.rank:
 				#print(f"New node rank {rank} > {cur.rank}")
 				#print("We stop here")
 				break
@@ -636,7 +714,14 @@ def insert(self, key: KeyType, val: ValType, rank: Rank = None):
 				else:
 					cur = cur.right
 					#print("Traversing right")
-
+			'''
+			if cur.rank > rank or (cur.rank == rank and cur.key < key):
+				prev = cur
+				is_left = (key < cur.key)
+				cur = cur.left if is_left else cur.right
+			else:
+				break
+		'''
 		if cur == self.root:
 			#print("We are at root. Moving old root to the new  root's...")
 			if cur.key < key:
@@ -695,6 +780,16 @@ def insert(self, key: KeyType, val: ValType, rank: Rank = None):
 				fix.right = cur
 
 		return
+		'''
+
+		node.left, node.right = self.split(cur, key)
+
+		if prev is None:
+			self.root = node
+		elif is_left:
+			prev.left = node
+		else:
+			prev.right = node
 	
 	# search(): returns the node to be removed, its left and right child, and its parent
 	def search(self, key: KeyType):
@@ -843,9 +938,7 @@ def insert(self, key: KeyType, val: ValType, rank: Rank = None):
 	# get_height(): returns the height of the tree.
 
 	def get_height(self) -> int:
-		if not self.root:
-			return 0
-		
+
 		def calc_height(node: TreeNode):
 			if not node:
 				return -1
@@ -877,5 +970,26 @@ def insert(self, key: KeyType, val: ValType, rank: Rank = None):
 		else:
 			return depth
 
+'''
+[InsertType(4, 'a', requirements.Rank(0, 9)), InsertType(5, 'b', requirements.Rank(0, 9)), InsertType(2, 'c', requirements.Rank(1, 12)), InsertType(1, 'd', requirements.Rank(1, 5))]
+
+		2, c, 1, 12
+		/		\
+1, d, 1, 5  	4, a, 0, 9
+    /      			\
+0, e, 1, 5		  	5, b, 0, 9
+
+
+data2 = [InsertType(4, 'a', requirements.Rank(2, 1)), InsertType(5, 'b', requirements.Rank(2, 2)), InsertType(2, 'c', requirements.Rank(1, 8)), InsertType(1, 'd', requirements.Rank(0, 12)), InsertType(0, 'e', requirements.Rank(1, 8))]
+
+			5, b, 2, 2
+			/
+		4, a, 2, 1
+		/		
+	2, c, 1, 8	 	
+	/
+0, e, 1, 8
+		\
+		1, d, 0, 12
 
 '''
