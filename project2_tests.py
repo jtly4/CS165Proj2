@@ -247,5 +247,5 @@ def bin_packing_tests():
 
 
 if __name__ == '__main__':
-	zip_tree_tests()
-	#bin_packing_tests()
+	#zip_tree_tests()
+	bin_packing_tests()
