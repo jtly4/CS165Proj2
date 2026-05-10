@@ -479,7 +479,7 @@ class ZipZipTree:
 			return
 		else:
 			self.size -= 1
-			
+
 		prev = nodes[0]
 		cur = nodes[1]
 		left = nodes[2]
@@ -487,10 +487,10 @@ class ZipZipTree:
 		
 		
 		
-		print(f"prev: {prev.key if prev else None}")
-		print(f"cur: {cur.key}")
-		print(f"left: {left.key if left else None}")
-		print(f"right: {right.key if right else None}")
+		#print(f"prev: {prev.key if prev else None}")
+		#print(f"cur: {cur.key}")
+		#print(f"left: {left.key if left else None}")
+		#print(f"right: {right.key if right else None}")
 
 		'''while cur.key != key:
 			prev = cur
