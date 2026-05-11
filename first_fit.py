@@ -53,11 +53,11 @@ def first_fit(items: list[float], assignment: list[int], free_space: list[float]
 	bin_count = 0
 
 	for i, item in enumerate(items):
-		print(i, item)
+		#print(i, item)
 		target = find_first_fit_node(tree.root, item)
 		# create new bin
 		if target is None:
-			print("target is none...")
+			#print("target is none...")
 			free_space.append(1.0)
 			rank = tree.get_random_rank()
 			

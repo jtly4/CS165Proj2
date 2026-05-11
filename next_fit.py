@@ -85,7 +85,7 @@ def next_fit(items: list[float], assignment: list[int], free_space: list[float])
 		#print("appending last space")
 		free_space.append(round(remaining_capacity, 10))
 	
-	print(free_space)
+	# print(free_space)
 	return free_space
 
 
