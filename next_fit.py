@@ -55,28 +55,37 @@ def next_fit(items: list[float], assignment: list[int], free_space: list[float])
 		return
 	
 	free_space.clear()
-
 	bin_count = 0	
-	SCALE = 1e-10
+	SCALE = 1e-9
 	remaining_capacity = 1.0
-
 	bins = {bin_count: []}
 
 	for i in range(len(items)):
-		if SCALE < items[i] - remaining_capacity:
-			free_space.append(remaining_capacity)
+		rounded = round(items[i], 10)
+		calc = rounded - remaining_capacity
+		#print(f"rounded: {rounded}")
+		#print(f"calc: {calc}")
+		if SCALE < calc:
+			#print("scale < calc")
+			#print("making new bin")
+			round_remaining_cap = round(remaining_capacity, 10)
+			#print(f"rounded remaining cap added: {round_remaining_cap}")
+			free_space.append(round_remaining_cap)
 			bin_count += 1
 			bins[bin_count] = []
 			remaining_capacity = 1.0
 
-
 		bins[bin_count].append(items[i])
-		remaining_capacity -= items[i]
+		remaining_capacity -= rounded
 		assignment[i] = bin_count
+		#print(f"remain capacity after subtracting: {round(remaining_capacity, 10)}")
 
 	# need to handle last element if it didn't fill up current bin 
-	if len(free_space) != bin_count:
-		free_space.append(remaining_capacity)
+	if len(free_space) != bin_count+1:
+		#print("appending last space")
+		free_space.append(round(remaining_capacity, 10))
+	
+	print(free_space)
 	return free_space
 
 
@@ -119,4 +128,4 @@ items = [0.79, 0.88, 0.95, 0.12, 0.05, 0.46, 0.53, 0.64, 0.04, 0.38, 0.03, 0.26]
 assignment = [0] * len(items)
 free_space = []
 
-#rint(next_fit(items, assignment, free_space))
+print(next_fit(items, assignment, free_space))

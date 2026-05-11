@@ -299,8 +299,6 @@ class ZipZipTree:
 		else:
 			prev.right = merged 
 		
-	
-
 	# find(): returns the value of item with parameter key.
 	#         you can assume that the item exists in the tree.
 
@@ -309,7 +307,6 @@ class ZipZipTree:
 			return None
 		
 		cur = self.root
-
 		while cur:
 			if cur.key < key:
 				cur = cur.right
