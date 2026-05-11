@@ -40,11 +40,13 @@ def find_first_fit_node(node, size):
 	
 # fix_brc(): recalculates brc for each node in tree
 
-def fix_brc(node):
+def fix_brc(node, key):
 	if node is None:
 		return
-	fix_brc(node.left)
-	fix_brc(node.right)
+	if key < node.key:
+		fix_brc(node.left, key)
+	elif key > node.key:
+		fix_brc(node.right, key)
 	update_brc(node)
 
 def first_fit(items: list[float], assignment: list[int], free_space: list[float]):
@@ -62,7 +64,7 @@ def first_fit(items: list[float], assignment: list[int], free_space: list[float]
 			rank = tree.get_random_rank()
 			
 			tree.insert(bin_count, {RC: 1.0, BRC: 1.0}, rank)
-			fix_brc(tree.root)
+			fix_brc(tree.root, bin_count)
 			bin_count += 1
 			target = find_first_fit_node(tree.root, item)
 
@@ -76,7 +78,7 @@ def first_fit(items: list[float], assignment: list[int], free_space: list[float]
 		rank = target.rank
 		tree.remove(bin_index)
 		tree.insert(bin_index, {RC: new_rc, BRC: new_rc}, rank)
-		fix_brc(tree.root)
+		fix_brc(tree.root, bin_index)
 
 def first_fit_decreasing(items: list[float], assignment: list[int], free_space: list[float]):
 	sorted = shell_sort3(items)
