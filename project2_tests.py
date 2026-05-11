@@ -141,7 +141,7 @@ def bin_packing_tests():
 	free_space = list()
 
 	test1 = ProblemInstance(items = items, assignments = assignments, free_space = free_space)
-
+	print(f"items: {items}")
 	# next-fit
 	expected_result = ProblemInstance(items = items, assignments = [0, 0, 1, 1, 2, 2, 3, 3], free_space = [0.1, 0.2, 0.1, 0.0])
 	test_algorithm(test1, expected_result, requirements.next_fit, 'next_fit')
@@ -166,6 +166,7 @@ def bin_packing_tests():
 	items = [0.79, 0.88, 0.95, 0.12, 0.05, 0.46, 0.53, 0.64, 0.04, 0.38, 0.03, 0.26]
 	assignments = [0] * len(items)
 	free_space = list()
+	print(f"items: {items}")
 
 	test2 = ProblemInstance(items = items, assignments = assignments, free_space = free_space)
 
@@ -193,7 +194,7 @@ def bin_packing_tests():
 	items = [0.43, 0.75, 0.25, 0.42, 0.54, 0.03, 0.64]
 	assignments = [0] * len(items)
 	free_space = list()
-
+	print(f"items: {items}")
 	test3 = ProblemInstance(items = items, assignments = assignments, free_space = free_space)
 
 	# next-fit
