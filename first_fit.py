@@ -1,88 +1,86 @@
 from zipzip_tree import ZipZipTree, Rank, TreeNode
+from shell_sort3 import shell_sort3
+
+SCALE = 1e-9
+RC = "rc"
+BRC = "brc"
+
+def get_brc(node):
+	return node.val[BRC] if node else -1.0
+
+# update_brc(): recalculates BRC, from children to param node
+def update_brc(node):
+	if node is None:
+		return
+	node.val[BRC] = max(
+		node.val[RC],
+		get_brc(node.left),
+		get_brc(node.right)
+	)
+
+# find_first_fit_node(): returns node with tightest fit of current item, rc >= size
+# 						 or None if it cannot fit
+# note: if None, it should make a new bin? --> Yes!
+
+def find_first_fit_node(node, size):
+	# entire subtree cannot fit item!
+	if node is None or get_brc(node) < size - SCALE:
+		return None 
+		
+	# check left subtree first
+	res = find_first_fit_node(node.left, size)
+	if res is not None:
+		return res
+		
+	if node.val[RC] >= size - SCALE:
+		return node
+		
+	else:
+		return find_first_fit_node(node.right, size)
+	
+# fix_brc(): recalculates brc for each node in tree
+
+def fix_brc(node):
+	if node is None:
+		return
+	fix_brc(node.left)
+	fix_brc(node.right)
+	update_brc(node)
 
 def first_fit(items: list[float], assignment: list[int], free_space: list[float]):
-	SCALE = 1e-9
+	
 	tree = ZipZipTree(capacity=len(items)+1)
 	bin_count = 0
 
-	
-	def get_brc(node):
-		return node.val['brc'] if node else -1.0
-	
-	# update_brc(): recalculates BRC, from children to param node
-	def update_brc(node):
-		if node is None:
-			return
-		node.val['brc'] = max(
-			node.val['rc'],
-			get_brc(node.left),
-			get_brc(node.right)
-		)
+	for i, item in enumerate(items):
+		print(i, item)
+		target = find_first_fit_node(tree.root, item)
+		# create new bin
+		if target is None:
+			print("target is none...")
+			free_space.append(1.0)
+			rank = tree.get_random_rank()
+			
+			tree.insert(bin_count, {RC: 1.0, BRC: 1.0}, rank)
+			fix_brc(tree.root)
+			bin_count += 1
+			target = find_first_fit_node(tree.root, item)
 
-	# find_first_fit_node(): returns node with tightest fit of current item, rc >= size
-	# 						 or None if it cannot fit
-	# note: if None, it should make a new bin? 
+		bin_index = target.key
+		assignment[i] = bin_index
 
-	def find_first_fit_node(node, size):
-		# entire subtree cannot fit item!
-		if node is None or get_brc(node) < size - SCALE:
-			return None 
-		
-		# check left subtree first
-		res = find_first_fit_node(node.left, size)
-		if res is not None:
-			return res
-		
-		if node.val['rc'] >= size - SCALE:
-			return node
-		
-		else:
-			return find_first_fit_node(node.right, size)
+		old_rc = target.val[RC]
+		new_rc = old_rc - item
+		free_space[bin_index] = new_rc
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+		rank = target.rank
+		tree.remove(bin_index)
+		tree.insert(bin_index, {RC: new_rc, BRC: new_rc}, rank)
+		fix_brc(tree.root)
 
 def first_fit_decreasing(items: list[float], assignment: list[int], free_space: list[float]):
-	pass
+	sorted = shell_sort3(items)
+	first_fit(sorted, assignment, free_space)
 
 '''
 (i, rc, brc)
