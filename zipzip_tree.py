@@ -246,13 +246,13 @@ class ZipZipTree:
 		cur = nodes[1]
 		left = nodes[2]
 		right = nodes[3]
-
+		'''
 		#print(f"prev: {prev.key if prev else None}")
 		#print(f"cur: {cur.key}")
 		#print(f"left: {left.key if left else None}")
 		#print(f"right: {right.key if right else None}")
 
-		'''
+		
 		# if cur is a leaf node
 		if not left and not right:
 			self.remove_leaf(prev, cur)
